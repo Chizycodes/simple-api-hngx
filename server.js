@@ -15,8 +15,7 @@ app.get('/api', (req, res) => {
 	const current_day = new Date().toLocaleString('en-US', { weekday: 'long' });
 
 	// Get the current UTC time
-	const utc_time = new Date().toISOString();
-
+	const utc_time = new Date().toISOString().slice(0, -5) + 'Z';
 	// Validate the current time to be within +/-2 hours
 	const currentTime = new Date();
 	const utcTime = new Date(utc_time);
