@@ -6,6 +6,11 @@ app.get('/api', (req, res) => {
 	// Get the query parameters
 	const { slack_name, track } = req.query;
 
+	// Check if slack_name and track are provided
+	if (!slack_name || !track) {
+		return res.status(400).json({ error: 'slack_name and track are required' });
+	}
+
 	// Get current day
 	const current_day = new Date().toLocaleString('en-US', { weekday: 'long' });
 
