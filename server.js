@@ -26,7 +26,7 @@ app.get('/api', (req, res) => {
 		current_day,
 		utc_time,
 		track,
-		github_file_url: 'https://example.com/github-file',
+		github_file_url: 'https://github.com/Chizycodes/simple-api-hngx/blob/main/server.js',
 		github_repo_url: 'https://github.com/Chizycodes/simple-api-hngx',
 		status_code: 200,
 	};
