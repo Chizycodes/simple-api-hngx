@@ -9,67 +9,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.post('/api', async (req, res) => {
-	try {
-		const person = await Person.create(req.body);
-		res.status(200).json({ success: true, data: person });
-	} catch (error) {
-		res.status(500).json({ success: false, message: error.message });
-	}
-});
+const persons = require('./routes/users');
 
-app.get('/api', async (req, res) => {
-	try {
-		const person = await Person.find({});
-		res.status(200).json({ success: true, data: person });
-	} catch (error) {
-		res.status(500).json({ success: false, message: error.message });
-	}
-});
+//Mount stage 2 routes
+app.use('/api', persons);
 
-app.get('/api/:id', async (req, res) => {
-	try {
-		const { id } = req.params;
-		const person = await Person.findById(id);
-		res.status(200).json({ success: true, data: person });
-	} catch (error) {
-		res.status(500).json({ success: false, message: error.message });
-	}
-});
-
-app.patch('/api/:id', async (req, res) => {
-	try {
-		const { id } = req.params;
-		let person = await Person.findByIdAndUpdate(id, req.body);
-
-		// cannot find person
-		if (!person) {
-			return res.status(404).json({ success: false, message: `Cannot find person with ID ${id}` });
-		}
-
-		person = await Person.findById(id);
-
-		res.status(200).json({ success: true, data: person });
-	} catch (error) {
-		res.status(500).json({ success: false, message: error.message });
-	}
-});
-
-app.delete('/api/:id', async (req, res) => {
-	try {
-		const { id } = req.params;
-		const person = await Person.findByIdAndDelete(id);
-
-		// cannot find person
-		if (!person) {
-			return res.status(404).json({ success: false, message: `Cannot find person with ID ${id}` });
-		}
-		res.status(200).json({ success: true, message: 'Person deleted successfully' });
-	} catch (error) {
-		res.status(500).json({ success: false, message: error.message });
-	}
-});
-
+// Stage 1 route
 app.get('/stage1', (req, res) => {
 	// Get the query parameters
 	const { slack_name, track } = req.query;
