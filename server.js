@@ -26,6 +26,34 @@ app.get('/api', async (req, res) => {
 	}
 });
 
+app.get('/api/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const person = await Person.findById(id);
+		res.status(200).json({ success: true, data: person });
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+});
+
+app.patch('/api/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		let person = await Person.findByIdAndUpdate(id, req.body);
+
+		// cannot find person
+		if (!person) {
+			return res.status(404).json({ success: false, message: `Cannot find person with ID ${id}` });
+		}
+
+		person = await Person.findById(id);
+
+		res.status(200).json({ success: true, data: person });
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+});
+
 app.get('/stage1', (req, res) => {
 	// Get the query parameters
 	const { slack_name, track } = req.query;
