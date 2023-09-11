@@ -1,8 +1,11 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.get('/api', (req, res) => {
+// Routes
+
+app.get('/task1', (req, res) => {
 	// Get the query parameters
 	const { slack_name, track } = req.query;
 
@@ -39,7 +42,17 @@ app.get('/api', (req, res) => {
 	res.json(data);
 });
 
-// Start the server
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+// connect to db
+mongoose
+	.connect('mongodb+srv://admin:Admin12345@cluster0.1ibyjby.mongodb.net/stage2?retryWrites=true&w=majority')
+	.then(() => {
+		console.log('connected to database');
+
+		// Start the server
+		app.listen(PORT, () => {
+			console.log(`Server is running on port ${PORT}`);
+		});
+	})
+	.catch((error) => {
+		console.log(error);
+	});
