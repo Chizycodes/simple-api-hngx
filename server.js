@@ -1,11 +1,32 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const Person = require('./models/personModel');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Routes
+// Middleware for parsing JSON data
+app.use(express.json());
 
-app.get('/task1', (req, res) => {
+// Routes
+app.post('/api', async (req, res) => {
+	try {
+		const person = await Person.create(req.body);
+		res.status(200).json({ success: true, data: person });
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+});
+
+app.get('/api', async (req, res) => {
+	try {
+		const person = await Person.find({});
+		res.status(200).json({ success: true, data: person });
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+});
+
+app.get('/stage1', (req, res) => {
 	// Get the query parameters
 	const { slack_name, track } = req.query;
 
