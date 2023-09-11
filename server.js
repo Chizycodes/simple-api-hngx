@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware for parsing JSON data
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.post('/api', async (req, res) => {
@@ -49,6 +50,21 @@ app.patch('/api/:id', async (req, res) => {
 		person = await Person.findById(id);
 
 		res.status(200).json({ success: true, data: person });
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+});
+
+app.delete('/api/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const person = await Person.findByIdAndDelete(id);
+
+		// cannot find person
+		if (!person) {
+			return res.status(404).json({ success: false, message: `Cannot find person with ID ${id}` });
+		}
+		res.status(200).json({ success: true, message: 'Person deleted successfully' });
 	} catch (error) {
 		res.status(500).json({ success: false, message: error.message });
 	}
