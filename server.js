@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Person = require('./models/personModel');
+const dotenv = require('dotenv');
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Load env variables
+dotenv.config({ path: './.env' });
 
 // Middleware for parsing JSON data
 app.use(express.json());
@@ -54,7 +57,7 @@ app.get('/stage1', (req, res) => {
 
 // connect to db
 mongoose
-	.connect('mongodb+srv://admin:Admin12345@cluster0.1ibyjby.mongodb.net/stage2?retryWrites=true&w=majority')
+	.connect(`${process.env.MONGO_URI}`)
 	.then(() => {
 		console.log('connected to database');
 
