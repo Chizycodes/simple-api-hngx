@@ -7,8 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
   },
+  "engines": {
+    "node": "^16.20.1"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Joy Okwudire",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
