@@ -4,7 +4,7 @@ const personSchema = mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: [true, 'Please enter your name'],
+			required: [true, 'Please enter a name'],
 		},
 	},
 	{
