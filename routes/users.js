@@ -5,6 +5,6 @@ const router = express.Router({ mergeParams: true });
 
 router.route('/').get(getPersons).post(createPerson);
 
-router.route('/:query').get(getPerson).patch(updatePerson).delete(deletePerson);
+router.route('/:id').get(getPerson).patch(updatePerson).delete(deletePerson);
 
 module.exports = router;

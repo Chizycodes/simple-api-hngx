@@ -24,20 +24,20 @@ exports.getPersons = async (req, res) => {
 // Get single person by ID or name
 exports.getPerson = async (req, res) => {
 	try {
-		const { query } = req.params;
+		const { id } = req.params;
 
-		// Check if the query is a valid ObjectId (ID-based query)
-		if (mongoose.Types.ObjectId.isValid(query)) {
-			const personById = await Person.findById(query);
+		// Check if the id is a valid ObjectId (ID-based id)
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const personById = await Person.findById(id);
 			if (!personById) {
-				return res.status(404).json({ success: false, message: `Person with ID ${query} not found` });
+				return res.status(404).json({ success: false, message: `Person with ID ${id} not found` });
 			}
 			return res.status(200).json({ success: true, data: personById });
 		} else {
-			// If not a valid ObjectId, assume it's a name-based query
-			const personByName = await Person.findOne({ name: query });
+			// If not a valid ObjectId, assume it's a name-based id
+			const personByName = await Person.findOne({ name: id });
 			if (!personByName) {
-				return res.status(404).json({ success: false, message: `Person with name ${query} not found` });
+				return res.status(404).json({ success: false, message: `Person with name ${id} not found` });
 			}
 			return res.status(200).json({ success: true, data: personByName });
 		}
@@ -49,15 +49,15 @@ exports.getPerson = async (req, res) => {
 // Update person by id
 exports.updatePerson = async (req, res) => {
 	try {
-		const { query } = req.params;
-		let person = await Person.findByIdAndUpdate(query, req.body);
+		const { id } = req.params;
+		let person = await Person.findByIdAndUpdate(id, req.body);
 
 		// cannot find person
 		if (!person) {
-			return res.status(404).json({ success: false, message: `Cannot find person with ID ${query}` });
+			return res.status(404).json({ success: false, message: `Cannot find person with ID ${id}` });
 		}
 
-		person = await Person.findById(query);
+		person = await Person.findById(id);
 
 		res.status(200).json({ success: true, data: person });
 	} catch (error) {
@@ -68,12 +68,12 @@ exports.updatePerson = async (req, res) => {
 // Delete person by id
 exports.deletePerson = async (req, res) => {
 	try {
-		const { query } = req.params;
+		const { id } = req.params;
 		const person = await Person.findByIdAndDelete(id);
 
 		// cannot find person
 		if (!person) {
-			return res.status(404).json({ success: false, message: `Cannot find person with ID ${query}` });
+			return res.status(404).json({ success: false, message: `Cannot find person with ID ${id}` });
 		}
 		res.status(200).json({ success: true, message: 'Person deleted successfully' });
 	} catch (error) {
